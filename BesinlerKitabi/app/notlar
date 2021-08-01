@@ -1,0 +1,55 @@
+1)Gradle hazılrlık kullanılan kütaphaneleri implement ediyoruz
+    - support eklemek icin revactor androidx yapıyoruz do refacetor
+2)Navigasyon ve fragmentkeri ekliyoruz
+  - fragmentlere constraint layoutu layout içine aliyoruz data bining için daha  akıcı kullanmamız sağlıyor
+  -Fragmentlerı navigation grap ile birbirene bağlıyoruz sonra navhost ile activity bağlıyoruz
+  *Fragment arası veri gonderme arguman gonderme navigation
+
+3)Kullanıcı Arayuz Calısma
+    1-besin listesi fragnment receyler wiew ekliyoruz ortaya textview + progsess bar
+    2* recyler view ayarlıyruz
+    not:data bining için layout arasına yazıyoruz  layout witdh =0 genişleyebilfdiğin kadar genişle ağırlık 3
+//gravity yukardan asağı
+4)mvvm yapısı
+1-veri cekeceksek data sınıfı olusturarak model yapıcaz
+2-besin adapter olusturacagız besinrecyleradapter
+not resim için picasso ile urlden cekebiliriz
+3)view model olusturma ne kadar view varsa okadar ayrı ayrı viewmodel olustur besinlistesi besin detay 2 fragment
+lifecycle canlı veri view model: fragmen ve activity ile olusturulur ve biter
+live data: veri tutan sınıf(gozlenlenebilir)abone ol
+// room sqlitekullanmak icin kullanılan kutuphane
+
+4)retrofit için modele gideriz gelen veriyi hangi değişkene atacagımızı soylememiz lazım
+rx java
+ private   fun verileriinternettenal()
+    {
+    besinyukleniyor.value=true
+        //ıo thread,default,uı
+     disposable.add(
+         besinapiservis.getData()
+             .subscribeOn(Schedulers.newThread())
+             .observeOn(AndroidSchedulers.mainThread())
+             .subscribeWith(object :DisposableSingleObserver<List<besin>>(){
+                 override fun onSuccess(t: List<besin>) {
+                    //basarılı olursa
+                     //life data
+                     besinler.value=t
+                     besinhatamesaj.value=false
+                     besinyukleniyor.value=false
+                 }
+
+                 override fun onError(e: Throwable) {
+                     //hata alırsak
+                     besinhatamesaj.value=true
+                     besinyukleniyor.value=false
+                     e.printStackTrace()
+                 }
+
+             })
+
+     )
+    }
+    5-resin için glide
+    6 room sqlite için kullaılıyot indirlen veri leri arka planda sqlite kaydetme
+    7-threading  buyuk veriler için -- suspend fun coroutinus
+     dao.insertAll(*besinListesi.toTypedArray())//tek tek dizi oalrak verecek
